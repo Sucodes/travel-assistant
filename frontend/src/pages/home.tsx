@@ -1,4 +1,5 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
+import styles from "./Home.module.css";
 
 type FlightType = "returnFlight" | "oneWayFlight";
 
@@ -24,56 +25,99 @@ const Home = () => {
   const flightTypeToggle = watch("flightType");
 
   return (
-    <main>
+    <main className={styles.main}>
       {/* Main form for handling the flight bookings */}
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <label>Choose your flight type</label>
-          <select
-            defaultValue={"oneWayFlight"}
-            {...register("flightType", { required: true })}
-          >
-            <option value="returnFlight">Return</option>
-            <option value="oneWayFlight">One way</option>
-          </select>
+
+      <div className={styles.promoBar}>
+        ✈️ Book now and save up to 20% on selected routes!
+      </div>
+
+      <div className={styles.formContainer}>
+        <div className={styles.formHeader}>
+          <h1>Find Your Perfect Flight</h1>
+          <p>
+            Your travel assistance, we've got you covered when
+            plans change
+          </p>
         </div>
 
-        <div>
-          <label>Departure</label>
-          <input {...register("departure", { required: true })} />
-          {errors.departure && <span>This field is required</span>}
+        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+          <div className={styles.flightTypeSection}>
+            <label>Choose your flight type</label>
+            <select
+              defaultValue={"oneWayFlight"}
+              {...register("flightType", { required: true })}
+            >
+              <option value="returnFlight">Return</option>
+              <option value="oneWayFlight">One way</option>
+            </select>
+          </div>
 
-          <label>Destination</label>
-          <input {...register("destination", { required: true })} />
-          {errors.destination && <span>This field is required</span>}
+          <div className={styles.inputGrid}>
+            <div className={styles.inputGroup}>
+              <label>Departure</label>
+              <input {...register("departure", { required: true })} />
+              {errors.departure && (
+                <span className={styles.errorMessage}>
+                  This field is required
+                </span>
+              )}
+            </div>
 
-          <label>
-            {flightTypeToggle === "returnFlight"
-              ? "Enter Departure Date"
-              : "Enter Date"}
-          </label>
-          <input {...register("departureDate", { required: true })} />
-          {errors.departureDate && <span>This field is required</span>}
+            <div className={styles.inputGroup}>
+              <label>Destination</label>
+              <input {...register("destination", { required: true })} />
+              {errors.destination && (
+                <span className={styles.errorMessage}>
+                  This field is required
+                </span>
+              )}
+            </div>
 
-          {flightTypeToggle === "returnFlight" && (
-            <>
-              <label>Enter arrival date</label>
-              <input
-                {...register("arrivalDate", {
-                  required: flightTypeToggle === "returnFlight"
-                })}
-              />
-              {errors.arrivalDate && <span>This field is required</span>}
-            </>
-          )}
+            <div className={styles.inputGroup}>
+              <label>
+                {flightTypeToggle === "returnFlight"
+                  ? "Enter Departure Date"
+                  : "Enter Date"}
+              </label>
+              <input {...register("departureDate", { required: true })} />
+              {errors.departureDate && (
+                <span className={styles.errorMessage}>
+                  This field is required
+                </span>
+              )}
+            </div>
 
-          <label>Enter amount of passengers</label>
-          <input {...register("passengers", { required: true })} />
-          {errors.passengers && <span>This field is required</span>}
-        </div>
+            {flightTypeToggle === "returnFlight" && (
+              <div className={styles.inputGroup}>
+                <label>Enter arrival date</label>
+                <input
+                  {...register("arrivalDate", {
+                    required: flightTypeToggle === "returnFlight",
+                  })}
+                />
+                {errors.arrivalDate && (
+                  <span className={styles.errorMessage}>
+                    This field is required
+                  </span>
+                )}
+              </div>
+            )}
 
-        <input type="submit" />
-      </form>
+            <div className={styles.inputGroup}>
+              <label>Enter amount of passengers</label>
+              <input {...register("passengers", { required: true })} />
+              {errors.passengers && (
+                <span className={styles.errorMessage}>
+                  This field is required
+                </span>
+              )}
+            </div>
+          </div>
+
+          <input type="submit" className={styles.submitButton} />
+        </form>
+      </div>
     </main>
   );
 };
