@@ -1,9 +1,15 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
 
-type Inputs = {
-  example: string;
-  exampleRequired: string;
-};
+type FlightType = "returnFlight" | "oneWayFlight";
+
+interface FormData {
+  flightType: FlightType;
+  departure: string;
+  destination: string;
+  departureDate: string;
+  arrivalDate: string;
+  passengers: number;
+}
 
 const Home = () => {
   const {
@@ -11,24 +17,64 @@ const Home = () => {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  } = useForm<FormData>();
 
-  console.log(watch("example"));
+  const onSubmit: SubmitHandler<FormData> = (data) => console.log(data);
+
+  const flightTypeToggle = watch("flightType");
 
   return (
-    /* "handleSubmit" will validate your inputs before invoking "onSubmit" */
-    <form onSubmit={handleSubmit(onSubmit)}>
-      {/* register your input into the hook by invoking the "register" function */}
-      <input defaultValue="test" {...register("example")} />
+    <main>
+      {/* Main form for handling the flight bookings */}
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div>
+          <label>Choose your flight type</label>
+          <select
+            defaultValue={"oneWayFlight"}
+            {...register("flightType", { required: true })}
+          >
+            <option value="returnFlight">Return</option>
+            <option value="oneWayFlight">One way</option>
+          </select>
+        </div>
 
-      {/* include validation with required or other standard HTML validation rules */}
-      <input {...register("exampleRequired", { required: true })} />
-      {/* errors will return when field validation fails  */}
-      {errors.exampleRequired && <span>This field is required</span>}
+        <div>
+          <label>Departure</label>
+          <input {...register("departure", { required: true })} />
+          {errors.departure && <span>This field is required</span>}
 
-      <input type="submit" />
-    </form>
+          <label>Destination</label>
+          <input {...register("destination", { required: true })} />
+          {errors.destination && <span>This field is required</span>}
+
+          <label>
+            {flightTypeToggle === "returnFlight"
+              ? "Enter Departure Date"
+              : "Enter Date"}
+          </label>
+          <input {...register("departureDate", { required: true })} />
+          {errors.departureDate && <span>This field is required</span>}
+
+          {flightTypeToggle === "returnFlight" && (
+            <>
+              <label>Enter arrival date</label>
+              <input
+                {...register("arrivalDate", {
+                  required: flightTypeToggle === "returnFlight"
+                })}
+              />
+              {errors.arrivalDate && <span>This field is required</span>}
+            </>
+          )}
+
+          <label>Enter amount of passengers</label>
+          <input {...register("passengers", { required: true })} />
+          {errors.passengers && <span>This field is required</span>}
+        </div>
+
+        <input type="submit" />
+      </form>
+    </main>
   );
 };
 
