@@ -1,3 +1,5 @@
+import styles from "./flight-results.module.css";
+
 const FlightResults = () => {
     // Dummy data for flight results
   const flights = [
@@ -22,34 +24,32 @@ const FlightResults = () => {
   ];
 
   return (
-    <div>
-      <div>
+    <div className={styles.flightResultsContainer}>
+      <div className={styles.resultsHeader}>
         <h1>Available Flights</h1>
-        <p>New York (JFK) - Los Angeles (LAX)</p>
+        <p className={styles.routeInfo}>New York (JFK) → Los Angeles (LAX)</p>
       </div>
 
-      <div>
+      <div className={styles.flightsList}>
         {flights.map((flight) => (
-          <div key={flight.id}>
-            <div>
-              <div>
-                <span>{flight.airline}</span>
+          <div key={flight.id} className={styles.flightCard}>
+            <div className={styles.flightHeader}>
+              <div className={styles.airlineInfo}>
+                <span className={styles.airlineName}>{flight.airline}</span>
               </div>
-              <div>${flight.price}</div>
+              <div className={styles.flightPrice}>${flight.price}</div>
             </div>
 
-            <div>
-              <div>
-                <div>
-                  {flight.departure.time}
-                </div>
-                <div>
+            <div className={styles.flightDetails}>
+              <div className={styles.timeLocation}>
+                <div className={styles.flightTime}>{flight.departure.time}</div>
+                <div className={styles.airportCode}>
                   {flight.departure.code}
                 </div>
               </div>
 
-              <div>
-                <div>{flight.duration}</div>
+              <div className={styles.flightDurationInfo}>
+                <div className={styles.durationBadge}>{flight.duration}</div>
                 <div
                   className={`stops-badge ${
                     flight.stops > 0 ? "has-stops" : ""
@@ -59,17 +59,13 @@ const FlightResults = () => {
                 </div>
               </div>
 
-              <div>
-                <div>
-                  {flight.arrival.time}
-                </div>
-                <div>
-                  {flight.arrival.code}
-                </div>
+              <div className={styles.timeLocation}>
+                <div className={styles.flightTime}>{flight.arrival.time}</div>
+                <div className={styles.airportCode}>{flight.arrival.code}</div>
               </div>
             </div>
 
-            <button>Select Flight</button>
+            <button className={styles.selectButton}>Select Flight</button>
           </div>
         ))}
       </div>
