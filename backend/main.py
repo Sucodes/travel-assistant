@@ -2,10 +2,11 @@ from flask import Flask, jsonify, request
 import requests
 from dotenv import load_dotenv #gotten from python-dotenv package https://pypi.org/project/python-dotenv/
 import os
-
+from flask_cors import CORS
 load_dotenv()
 
 app = Flask(__name__)
+CORS(app, resources={r"/api/*": {"origins": "http://localhost:5173"}})
 
 url = "https://google-flights2.p.rapidapi.com/api/v1/searchFlights" # https://rapidapi.com/DataCrawler/api/google-flights2/playground/apiendpoint_ce4a44ea-f781-4baf-883f-ea1b7da10907
 
@@ -41,12 +42,10 @@ def get_flights():
 
         if response.status_code == 200:
             flights = response.json()
-            return jsonify(flights.data)
+            return jsonify(flights)
         else:
             print('Error:', response.status_code, response.text)
-            return jsonify({"error": "Failed to contact flight API", "details": response.text}), response.status_code, response.status_code, {
-                "Access-Control-Allow-Origin": "*"
-            }
+            return jsonify({"error": "Failed to contact flight API", "details": response.text}), response.status_code
     except requests.exceptions.RequestException as e:
         print('Error:', e)
         return jsonify({"error": "Failed to contact API"})
