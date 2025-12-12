@@ -17,16 +17,20 @@ interface FormData {
 }
 
 type FlightData = {
-  departure_airport: {
-    airport_name: string;
-    airport_code: string;
-    time: string;
-  };
-  arrival_airport: {
-    airport_name: string;
-    airport_code: string;
-    time: string;
-  };
+  flights: [
+    {
+      departure_airport: {
+        airport_name: string;
+        airport_code: string;
+        time: string;
+      };
+      arrival_airport: {
+        airport_name: string;
+        airport_code: string;
+        time: string;
+      };
+    }
+  ];
   duration_label: string;
   duration: number;
   airline: string;
@@ -59,7 +63,6 @@ const Home = () => {
 
   const fetch = async (data: FormData) => {
     try {
-      console.log("Form Data:", data);
       const res = await axios.get("http://127.0.0.1:5000/api/flights", {
         params: {
           departure_id: data.departureId,
@@ -68,33 +71,36 @@ const Home = () => {
           adults: data.passengers,
         },
       });
-      console.log("Flights:", res.data.data.itineraries.topFlights);
       const newData = res.data.data.itineraries.topFlights.map(
         (flightDetail: FlightData, index: number) => {
           const {
-            departure_airport,
-            arrival_airport,
+            flights,
             duration_label,
-            duration,
-            airline,
-            airline_logo,
-            flight_number, price, stops
-          } = flightDetail;
-
-          return {
-            index,
-            departure_city: departure_airport.airport_name,
-            departure_code: departure_airport.airport_code,
-            departure_time: departure_airport.time,
-            arrival_city: arrival_airport.airport_name,
-            arrival_code: arrival_airport.airport_code,
-            arrival_time: arrival_airport.time,
-            duration_label,
-            duration,
             airline,
             airline_logo,
             flight_number,
-            price, stops
+            price,
+            stops,
+          } = flightDetail;
+
+          return {
+            id: index + 1,
+            departure: {
+              time: flights[0].departure_airport.time,
+              city: flights[0].departure_airport.airport_name,
+              code: flights[0].departure_airport.airport_code,
+            },
+            arrival: {
+              time: flights[0].arrival_airport.time,
+              city: flights[0].arrival_airport.airport_name,
+              code: flights[0].arrival_airport.airport_code,
+            },
+            duration: duration_label,
+            airline,
+            airline_logo,
+            flight_number,
+            price,
+            stops,
           };
         }
       );
