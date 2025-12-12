@@ -3,6 +3,7 @@ import styles from "./Home.module.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useState } from "react";
+import axios from "axios";
 
 type FlightType = "returnFlight" | "oneWayFlight";
 
@@ -15,9 +16,30 @@ interface FormData {
   passengers: string;
 }
 
+type FlightData = {
+  departure_airport: {
+    airport_name: string;
+    airport_code: string;
+    time: string;
+  };
+  arrival_airport: {
+    airport_name: string;
+    airport_code: string;
+    time: string;
+  };
+  duration_label: string;
+  duration: number;
+  airline: string;
+  airline_logo: string;
+  flight_number: string;
+  price: string;
+  stops: number;
+};
+
 const Home = () => {
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(startDate);
+  const [flightData, setFlightData] = useState<FlightData | null>(null);
   const {
     register,
     handleSubmit,
@@ -35,7 +57,55 @@ const Home = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<FormData> = (data) => console.log(data);
+  const fetch = async (data: FormData) => {
+    try {
+      console.log("Form Data:", data);
+      const res = await axios.get("http://127.0.0.1:5000/api/flights", {
+        params: {
+          departure_id: data.departureId,
+          arrival_id: data.arrivalId,
+          outbound_date: data.outboundDate,
+          adults: data.passengers,
+        },
+      });
+      console.log("Flights:", res.data.data.itineraries.topFlights);
+      const newData = res.data.data.itineraries.topFlights.map(
+        (flightDetail: FlightData, index: number) => {
+          const {
+            departure_airport,
+            arrival_airport,
+            duration_label,
+            duration,
+            airline,
+            airline_logo,
+            flight_number, price, stops
+          } = flightDetail;
+
+          return {
+            index,
+            departure_city: departure_airport.airport_name,
+            departure_code: departure_airport.airport_code,
+            departure_time: departure_airport.time,
+            arrival_city: arrival_airport.airport_name,
+            arrival_code: arrival_airport.airport_code,
+            arrival_time: arrival_airport.time,
+            duration_label,
+            duration,
+            airline,
+            airline_logo,
+            flight_number,
+            price, stops
+          };
+        }
+      );
+      console.log("Processed Flight Data:", newData);
+      setFlightData(newData);
+    } catch (err) {
+      console.log("Error:", err);
+    }
+  };
+
+  const onSubmit: SubmitHandler<FormData> = (data) => fetch(data);
 
   const flightTypeToggle = watch("flightType");
 
@@ -89,7 +159,7 @@ const Home = () => {
             <div className={styles.inputGroup}>
               <label>
                 {flightTypeToggle === "returnFlight"
-                  ? "Enter Departure Date"
+                  ? "Enter Departure_id Date"
                   : "Enter Date"}
               </label>
               <DatePicker
@@ -98,12 +168,10 @@ const Home = () => {
                 minDate={new Date()}
                 selected={startDate}
                 onChange={(date) => {
-                  setStartDate(date);
-                  if (startDate)
-                    setValue(
-                      "outboundDate",
-                      startDate.toISOString().split("T")[0]
-                    );
+                  if (date) {
+                    setStartDate(date);
+                    setValue("outboundDate", date.toISOString().split("T")[0]);
+                  }
                 }}
               />
               {errors.outboundDate && (
