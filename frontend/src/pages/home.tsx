@@ -4,6 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useState } from "react";
 import axios from "axios";
+import FlightResults, { type FlightResultsProps } from "./flight-results";
 
 type FlightType = "returnFlight" | "oneWayFlight";
 
@@ -43,7 +44,7 @@ type FlightData = {
 const Home = () => {
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(startDate);
-  const [flightData, setFlightData] = useState<FlightData | null>(null);
+  const [flightData, setFlightData] = useState<FlightResultsProps[] | null>(null);
   const {
     register,
     handleSubmit,
@@ -225,6 +226,24 @@ const Home = () => {
           <input type="submit" className={styles.submitButton} />
         </form>
       </div>
+
+      {flightData && flightData.length > 0 && (
+        <div>
+          {flightData.map((flight) => (
+            <FlightResults
+              key={flight.id}
+              airline={flight.airline}
+              airline_logo={flight.airline_logo}
+              flight_number={flight.flight_number}
+              departure={flight.departure}
+              arrival={flight.arrival}
+              duration={flight.duration}
+              stops={flight.stops}
+              price={flight.price}
+            />
+          ))}
+        </div>
+      )}
     </main>
   );
 };
