@@ -65,6 +65,7 @@ const Home = () => {
   });
 
   const fetch = async (data: FormData) => {
+    // TODO: Persist the fetched data to local storage so it is not lost when page is refreshed
     try {
       const res = await axios.get("http://127.0.0.1:5000/api/flights", {
         params: {
