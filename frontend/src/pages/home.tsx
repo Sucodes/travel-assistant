@@ -44,7 +44,9 @@ type FlightData = {
 const Home = () => {
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(startDate);
-  const [flightData, setFlightData] = useState<FlightResultsProps[] | null>(null);
+  const [flightData, setFlightData] = useState<FlightResultsProps[] | null>(
+    null
+  );
   const {
     register,
     handleSubmit,
@@ -105,7 +107,6 @@ const Home = () => {
           };
         }
       );
-      console.log("Processed Flight Data:", newData);
       setFlightData(newData);
     } catch (err) {
       console.log("Error:", err);
@@ -243,6 +244,10 @@ const Home = () => {
             />
           ))}
         </div>
+      )}
+
+      {flightData && flightData.length == 0 && (
+        <p>No flights found for the selected criteria.</p>
       )}
     </main>
   );
