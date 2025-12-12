@@ -8,11 +8,11 @@ type FlightType = "returnFlight" | "oneWayFlight";
 
 interface FormData {
   flightType: FlightType;
-  departure: string;
-  destination: string;
-  departureDate: string | null;
-  arrivalDate: string | null;
-  passengers: number;
+  departureId: string;
+  arrivalId: string;
+  outboundDate: string | null;
+  inboundDate: string | null;
+  passengers: string;
 }
 
 const Home = () => {
@@ -27,11 +27,11 @@ const Home = () => {
   } = useForm<FormData>({
     defaultValues: {
       flightType: "oneWayFlight",
-      departureDate: null,
-      arrivalDate: null,
-      destination: "",
-      departure: "",
-      passengers: 0,
+      outboundDate: null,
+      inboundDate: null,
+      arrivalId: "",
+      departureId: "",
+      passengers: "",
     },
   });
 
@@ -67,9 +67,9 @@ const Home = () => {
 
           <div className={styles.inputGrid}>
             <div className={styles.inputGroup}>
-              <label>Departure</label>
-              <input {...register("departure", { required: true })} />
-              {errors.departure && (
+              <label>Departure_id</label>
+              <input {...register("departureId", { required: true })} />
+              {errors.departureId && (
                 <span className={styles.errorMessage}>
                   This field is required
                 </span>
@@ -77,9 +77,9 @@ const Home = () => {
             </div>
 
             <div className={styles.inputGroup}>
-              <label>Destination</label>
-              <input {...register("destination", { required: true })} />
-              {errors.destination && (
+              <label>arrivalId</label>
+              <input {...register("arrivalId", { required: true })} />
+              {errors.arrivalId && (
                 <span className={styles.errorMessage}>
                   This field is required
                 </span>
@@ -101,12 +101,12 @@ const Home = () => {
                   setStartDate(date);
                   if (startDate)
                     setValue(
-                      "departureDate",
+                      "outboundDate",
                       startDate.toISOString().split("T")[0]
                     );
                 }}
               />
-              {errors.departureDate && (
+              {errors.outboundDate && (
                 <span className={styles.errorMessage}>
                   This field is required
                 </span>
@@ -124,12 +124,12 @@ const Home = () => {
                     setEndDate(date);
                     if (endDate)
                       setValue(
-                        "arrivalDate",
+                        "inboundDate",
                         endDate.toISOString().split("T")[0]
                       );
                   }}
                 />
-                {errors.arrivalDate && (
+                {errors.inboundDate && (
                   <span className={styles.errorMessage}>
                     This field is required
                   </span>
