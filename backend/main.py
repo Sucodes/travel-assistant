@@ -112,7 +112,7 @@ def get_flight_booking(flight_booking_id):
 
 @app.route("/api/flight-bookings", methods=["POST"])
 def add_flight_booking():
-    data = request.json.get_json()
+    data = request.get_json()
     new_booking = Flight_Bookings(
         airline=data["airline"],
         airline_logo=data.get("airline_logo"),
@@ -134,7 +134,7 @@ def add_flight_booking():
 
 @app.route("/api/flight-bookings/<int:flight_booking_id>", methods=["PUT"])
 def update_flight_booking(flight_booking_id):
-        data = request.json.get_json()
+        data = request.get_json()
         booking = Flight_Bookings.query.get(flight_booking_id)
         if booking:
             booking.departure_time = data.get("departure_time", booking.departure_time)
@@ -153,7 +153,7 @@ def update_flight_booking(flight_booking_id):
 def delete_flight_booking(flight_booking_id):
         booking = Flight_Bookings.query.get(flight_booking_id)
         if booking:
-            db.session.delete(flight_booking_id)
+            db.session.delete(booking)
             db.session.commit()
             return jsonify({"message": "Booking deleted successfully"})
         else:
