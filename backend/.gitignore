@@ -1,3 +1,13 @@
+# Environments
 .venv
-__pycache__
 .env
+
+# Cache files
+__pycache__
+
+# Unit test cache
+.pytest_cache/
+tests/__pycache__
+
+# Database
+instance
