@@ -107,7 +107,10 @@ def get_flight_bookings():
 def get_flight_bookings(flight_id):
     booking = Flight_Bookings.query.get(flight_id)
     print(booking)
-    return jsonify(booking.to_dict())
+    if booking is None:
+        return jsonify(booking.to_dict())
+    else:
+        return jsonify({"error": "Booking not found"}), 404
 
 if __name__ == "__main__":
     app.run(debug=True)
