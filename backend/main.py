@@ -100,17 +100,38 @@ def get_flights():
 @app.route("/api/flight-bookings", methods=["GET"])
 def get_all_flight_bookings():
     bookings = Flight_Bookings.query.all()
-    print(bookings)
     return jsonify([booking.to_dict() for booking in bookings])
 
 @app.route("/api/flight-bookings/<int:flight_booking_id>", methods=["GET"])
 def get_flight_booking(flight_booking_id):
     booking = Flight_Bookings.query.get(flight_booking_id)
-    print(booking)
     if booking is None:
         return jsonify(booking.to_dict())
     else:
         return jsonify({"error": "Booking not found"}), 404
+
+@app.route("/api/flight-bookings", methods=["POST"])
+def add_flight_booking():
+    data = request.json.get_json()
+    new_booking = Flight_Bookings(
+        airline=data["airline"],
+        airline_logo=data.get("airline_logo"),
+        flight_number=data["flight_number"],
+        departure_time=data["departure_time"],
+        departure_city=data["departure_city"],
+        departure_code=data["departure_code"],
+        arrival_time=data["arrival_time"],
+        arrival_city=data["arrival_city"],
+        arrival_code=data["arrival_code"],
+        duration=data["duration"],
+        stops=data["stops"],
+        price=data["price"],
+        passengers=data["passengers"]
+    )
+    db.session.add(new_booking)
+    db.session.commit()
+
+    return jsonify(new_booking.to_dict()), 201
 
 if __name__ == "__main__":
     app.run(debug=True)
