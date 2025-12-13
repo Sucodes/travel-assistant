@@ -130,8 +130,34 @@ def add_flight_booking():
     )
     db.session.add(new_booking)
     db.session.commit()
-
     return jsonify(new_booking.to_dict()), 201
+
+@app.route("/api/flight-bookings/<int:flight_booking_id>", methods=["PUT"])
+def update_flight_booking(flight_booking_id):
+        data = request.json.get_json()
+        booking = Flight_Bookings.query.get(flight_booking_id)
+        if booking:
+            booking.departure_time = data.get("departure_time", booking.departure_time)
+            booking.departure_code = data.get("departure_code", booking.departure_code)
+            booking.departure_city = data.get("departure_city", booking.departure_city)
+            booking.arrival_time = data.get("arrival_time", booking.arrival_time)
+            booking.arrival_code = data.get("arrival_code", booking.arrival_code)
+            booking.arrival_city = data.get("arrival_city", booking.arrival_city)
+            booking.passengers = data.get("passengers", booking.passengers)
+            db.session.commit()
+            return jsonify(booking.to_dict())
+        else:
+            return jsonify({"error": "Booking not found"}), 404
+
+@app.route("/api/flight-bookings/<int:flight_booking_id>", methods=["DELETE"])
+def delete_flight_booking(flight_booking_id):
+        booking = Flight_Bookings.query.get(flight_booking_id)
+        if booking:
+            db.session.delete(flight_booking_id)
+            db.session.commit()
+            return jsonify({"message": "Booking deleted successfully"})
+        else:
+            return jsonify({"error": "Booking not found"}), 404
 
 if __name__ == "__main__":
     app.run(debug=True)
