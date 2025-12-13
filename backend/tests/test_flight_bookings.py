@@ -11,7 +11,8 @@ TEST_FLIGHT_BOOKING_DATA = {
     "arrival_code": "LHR",
     "arrival_time": "2025-2-1 20:45",
     "price": "569",
-    "stops": 0
+    "stops": 0,
+    "passengers": 0
 }
 
 def test_create_function_for_flight_booking_returns_201(client):
