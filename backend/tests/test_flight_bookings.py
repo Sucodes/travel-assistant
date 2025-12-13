@@ -35,3 +35,11 @@ def test_get_flight_bookings_returns_list(client):
     assert isinstance(data, list)
     assert len(data) == 1
     assert data[0]["flight_number"] == "B6 1107"
+
+def test_create_flight_booking_missing_fields_returns_400(client):
+    res = client.post("/api/flight-bookings", json={"airline": "JetBlue"})
+    assert res.status_code == 400
+
+    body = res.get_json()
+    assert body["error"] == "Missing fields"
+    assert "missing" in body
