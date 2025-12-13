@@ -97,6 +97,17 @@ def get_flights():
         print('Error:', e)
         return jsonify({"error": "Failed to contact API"})
     
+@app.route("/api/flight-bookings", methods=["GET"])
+def get_flight_bookings():
+    bookings = Flight_Bookings.query.all()
+    print(bookings)
+    return jsonify([booking.to_dict() for booking in bookings])
+
+@app.route("/api/flight-bookings/<int:flight_id>", methods=["GET"])
+def get_flight_bookings(flight_id):
+    booking = Flight_Bookings.query.get(flight_id)
+    print(booking)
+    return jsonify(booking.to_dict())
 
 if __name__ == "__main__":
     app.run(debug=True)
