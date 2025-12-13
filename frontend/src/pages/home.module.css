@@ -194,6 +194,35 @@
   border-bottom: 2px solid #073590;
 }
 
+.flightResultsContainer {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem 0rem;
+  border-radius: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  min-height: 100vh;
+}
+
+.resultsHeader {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.resultsHeader h1 {
+  color: #ffffff;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.routeInfo {
+  color: #f0f0ff;
+  font-size: 1.125rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
   .main {
@@ -225,6 +254,18 @@
   .promoBar {
     padding: 10px 20px;
     font-size: 12px;
+  }
+
+  .flightResultsContainer {
+    padding: 1.5rem 1rem;
+  }
+
+  .resultsHeader h1 {
+    font-size: 1.875rem;
+  }
+
+  .routeInfo {
+    font-size: 1rem;
   }
 }
 

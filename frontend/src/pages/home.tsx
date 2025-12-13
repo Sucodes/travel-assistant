@@ -108,7 +108,9 @@ const Home = () => {
           };
         }
       );
-      setFlightData(newData);
+      // setFlightData(newData);
+      localStorage.setItem("flightData", JSON.stringify(newData));
+      setFlightData(localStorage.getItem("flightData") || newData);
     } catch (err) {
       console.log("Error:", err);
     }
@@ -229,27 +231,38 @@ const Home = () => {
         </form>
       </div>
 
-      {flightData && flightData.length > 0 && (
-        <div>
-          {flightData.map((flight) => (
-            <FlightResults
-              key={flight.id}
-              airline={flight.airline}
-              airline_logo={flight.airline_logo}
-              flight_number={flight.flight_number}
-              departure={flight.departure}
-              arrival={flight.arrival}
-              duration={flight.duration}
-              stops={flight.stops}
-              price={flight.price}
-            />
-          ))}
-        </div>
-      )}
+      <div className={styles.flightResultsContainer}>
+        {flightData && flightData.length > 0 && (
+          <>
+            <div className={styles.resultsHeader}>
+              <h1>Available Flights</h1>
+              <p className={styles.routeInfo}>
+                {flightData[0].departure.code} → {flightData[0].arrival.code}
+              </p>
+            </div>
 
-      {flightData && flightData.length == 0 && (
-        <p>No flights found for the selected criteria.</p>
-      )}
+            <div>
+              {flightData.map((flight) => (
+                <FlightResults
+                  key={flight.id}
+                  airline={flight.airline}
+                  airline_logo={flight.airline_logo}
+                  flight_number={flight.flight_number}
+                  departure={flight.departure}
+                  arrival={flight.arrival}
+                  duration={flight.duration}
+                  stops={flight.stops}
+                  price={flight.price}
+                />
+              ))}
+            </div>
+          </>
+        )}
+
+        {flightData && flightData.length == 0 && (
+          <p>No flights found for the selected criteria.</p>
+        )}
+      </div>
     </main>
   );
 };
