@@ -24,3 +24,14 @@ def test_create_function_for_flight_booking_returns_201(client):
     assert "id" in data
     assert data["departure_city"] == "John F. Kennedy International Airport"
     assert data["arrival_city"] == "Heathrow Airport"
+
+def test_get_flight_bookings_returns_list(client):
+    client.post("/api/flight-bookings", json=TEST_FLIGHT_BOOKING_DATA)
+
+    response = client.get("/api/flight-bookings")
+    assert response.status_code == 200
+
+    data = response.get_json()
+    assert isinstance(data, list)
+    assert len(data) == 1
+    assert data[0]["flight_number"] == "B6 1107"
