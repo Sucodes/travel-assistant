@@ -77,6 +77,17 @@ def create_app(config=None):
     @app.route("/api/flight-bookings", methods=["POST"])
     def add_flight_booking():
         data = request.get_json()
+
+        required_fields = ["airline", "flight_number", "departure_time", "departure_city", "departure_code", "arrival_time", "arrival_city", "arrival_code", "duration", "stops", "price", "passengers"]
+
+        missing = []
+        for field in required_fields:
+            if field not in data:
+                missing.append(field)
+
+        if missing:
+            return jsonify({"error": "Missing fields", "missing": missing}), 400
+
         new_booking = Flight_Bookings(
             airline=data["airline"],
             airline_logo=data.get("airline_logo"),
