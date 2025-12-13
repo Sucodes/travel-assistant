@@ -7,7 +7,7 @@ from models import db, Flight_Bookings
 
 load_dotenv()
 
-def create_app():
+def create_app(config=None):
     app = Flask(__name__)
     CORS(app, resources={r"/api/*": {"origins": "http://localhost:5173"}})
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project.db"
@@ -15,6 +15,9 @@ def create_app():
 
     with app.app_context():
         db.create_all()
+
+    if config:
+        app.config.update(config)
     
     url = "https://google-flights2.p.rapidapi.com/api/v1/searchFlights" # https://rapidapi.com/DataCrawler/api/google-flights2/playground/apiendpoint_ce4a44ea-f781-4baf-883f-ea1b7da10907
 
