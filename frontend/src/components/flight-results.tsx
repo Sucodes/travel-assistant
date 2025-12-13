@@ -1,4 +1,4 @@
-import { formattedDate } from '../utilities/formattedDate';
+import { formattedDate } from "../utilities/formattedDate";
 import styles from "./flight-results.module.css";
 
 export interface FlightResultsProps {
@@ -21,14 +21,13 @@ export interface FlightResultsProps {
   stops: number;
 }
 
-const FlightResults = ({
-  airline,
-  departure,
-  arrival,
-  duration,
-  stops,
-  price,
-}: FlightResultsProps) => {
+type FlightDataProps = {
+  flight: FlightResultsProps;
+  onSelect: (flight: FlightResultsProps) => void;
+};
+
+const FlightResults = ({ flight, onSelect }: FlightDataProps) => {
+  const { airline, departure, arrival, duration, stops, price } = flight;
   return (
     <div className={styles.flightCard}>
       <div className={styles.flightHeader}>
@@ -61,7 +60,12 @@ const FlightResults = ({
         </div>
       </div>
 
-      <button className={styles.selectButton}>Select Flight</button>
+      <button
+        className={styles.selectButton}
+        onClick={() => onSelect(flight)}
+      >
+        Select Flight
+      </button>
     </div>
   );
 };

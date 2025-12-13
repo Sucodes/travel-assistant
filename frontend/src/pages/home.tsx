@@ -4,7 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import FlightResults, { type FlightResultsProps } from "./flight-results";
+import FlightResults, { type FlightResultsProps } from "../components/flight-results";
 
 type FlightType = "returnFlight" | "oneWayFlight";
 
@@ -124,6 +124,10 @@ const Home = () => {
   const onSubmit: SubmitHandler<FormData> = (data) => fetch(data);
 
   const flightTypeToggle = watch("flightType");
+
+  const handleSelectFlight = (flight: FlightResultsProps) => {
+    console.log("Selected flight ID:", flight);
+  };
 
   return (
     <main className={styles.main}>
@@ -250,14 +254,8 @@ const Home = () => {
               {flightData.map((flight) => (
                 <FlightResults
                   key={flight.id}
-                  airline={flight.airline}
-                  airline_logo={flight.airline_logo}
-                  flight_number={flight.flight_number}
-                  departure={flight.departure}
-                  arrival={flight.arrival}
-                  duration={flight.duration}
-                  stops={flight.stops}
-                  price={flight.price}
+                  flight={flight}
+                  onSelect={handleSelectFlight}
                 />
               ))}
             </div>
