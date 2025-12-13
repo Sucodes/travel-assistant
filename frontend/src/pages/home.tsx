@@ -2,7 +2,7 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import styles from "./Home.module.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import FlightResults, { type FlightResultsProps } from "./flight-results";
 
@@ -65,7 +65,6 @@ const Home = () => {
   });
 
   const fetch = async (data: FormData) => {
-    // TODO: Persist the fetched data to local storage so it is not lost when page is refreshed
     try {
       const res = await axios.get("http://127.0.0.1:5000/api/flights", {
         params: {
@@ -108,13 +107,19 @@ const Home = () => {
           };
         }
       );
-      // setFlightData(newData);
-      localStorage.setItem("flightData", JSON.stringify(newData));
-      setFlightData(localStorage.getItem("flightData") || newData);
+      setFlightData(newData);
+      sessionStorage.setItem("flightData", JSON.stringify(newData));
     } catch (err) {
       console.log("Error:", err);
     }
   };
+
+  useEffect(() => {
+    const storedFlightData = sessionStorage.getItem("flightData");
+    if (storedFlightData) {
+      setFlightData(JSON.parse(storedFlightData));
+    }
+  }, []);
 
   const onSubmit: SubmitHandler<FormData> = (data) => fetch(data);
 
@@ -241,7 +246,7 @@ const Home = () => {
               </p>
             </div>
 
-            <div>
+            <div className={styles.flightsList}>
               {flightData.map((flight) => (
                 <FlightResults
                   key={flight.id}
