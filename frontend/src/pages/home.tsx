@@ -8,7 +8,7 @@ import FlightResults, {
   type FlightResultsProps,
 } from "../components/flight-results";
 import { toast } from "react-toastify";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 type FlightType = "returnFlight" | "oneWayFlight";
 
@@ -165,6 +165,21 @@ const Home = () => {
   return (
     <main className={styles.main}>
       {/* Main form for handling the flight bookings */}
+
+      <div style={{display: "flex", justifyContent: "space-around"}}>
+        <button
+          onClick={() => {
+            setStartDate(null);
+            setEndDate(null);
+            setFlightData(null);
+            sessionStorage.clear();
+          }}
+        >
+          Reset flight search
+        </button>
+
+        <button onClick={() => navigate("/profile")}>View My Flights</button>
+      </div>
 
       <div className={styles.promoBar}>
         ✈️ Book now and save up to 20% on selected routes!
