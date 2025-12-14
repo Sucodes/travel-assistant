@@ -206,7 +206,10 @@ const Home = () => {
           <div className={styles.inputGrid}>
             <div className={styles.inputGroup}>
               <label>Departure_id</label>
-              <input {...register("departureId", { required: true })} />
+              <input
+                placeholder="LAX"
+                {...register("departureId", { required: true })}
+              />
               {errors.departureId && (
                 <span className={styles.errorMessage}>
                   This field is required
@@ -216,7 +219,10 @@ const Home = () => {
 
             <div className={styles.inputGroup}>
               <label>arrivalId</label>
-              <input {...register("arrivalId", { required: true })} />
+              <input
+                placeholder="JFK"
+                {...register("arrivalId", { required: true })}
+              />
               {errors.arrivalId && (
                 <span className={styles.errorMessage}>
                   This field is required

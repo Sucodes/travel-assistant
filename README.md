@@ -76,4 +76,5 @@ This project focuses on implementing CRUD operations (Create, Read, Update, Dele
 - [React Hook Form Documentation](https://react-hook-form.com/)
 - [Render Documentation](https://render.com/)
 - [SQLAlchemy Documentation](https://docs.sqlalchemy.org/en/20/)
+- [Designing RESTful APIs Udacity course](https://www.udacity.com/enrollment/ud388)
 - [Claude AI](https://claude.ai/new)
