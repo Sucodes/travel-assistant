@@ -32,14 +32,18 @@ type FlightData = {
         airport_code: string;
         time: string;
       };
+      airline: string;
+      flight_number: string;
+
+      duration_label: string;
     }
   ];
-  duration_label: string;
-  duration: number;
-  airline: string;
+  duration: {
+    raw: number;
+    text: string;
+  };
   airline_logo: string;
-  flight_number: string;
-  price: string;
+  price: number;
   stops: number;
 };
 
@@ -78,15 +82,7 @@ const Home = () => {
       });
       const newData = res.data.data.itineraries.topFlights.map(
         (flightDetail: FlightData, index: number) => {
-          const {
-            flights,
-            duration_label,
-            airline,
-            airline_logo,
-            flight_number,
-            price,
-            stops,
-          } = flightDetail;
+          const { flights, duration, airline_logo, price, stops } = flightDetail;
 
           return {
             id: index + 1,
@@ -100,10 +96,11 @@ const Home = () => {
               city: flights[0].arrival_airport.airport_name,
               code: flights[0].arrival_airport.airport_code,
             },
-            duration: duration_label,
-            airline,
+            duration: duration.text,
+            duration_label: flights[0].duration_label,
+            airline: flights[0].airline,
             airline_logo,
-            flight_number,
+            flight_number: flights[0].flight_number,
             price,
             stops,
           };
@@ -144,7 +141,7 @@ const Home = () => {
           duration: flight.duration,
           stops: flight.stops,
           price: flight.price,
-          passengers: flight.passengers,
+          passengers: Number(flight.passengers),
         }
       );
       console.log("Booking Response:", res.data);

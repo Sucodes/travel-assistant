@@ -14,10 +14,11 @@ export interface FlightResultsProps {
     time: string;
   };
   duration: number;
+  duration_label: string;
   airline: string;
   airline_logo: string;
   flight_number: string;
-  price: string;
+  price: number;
   stops: number;
   passengers: string;
 }
