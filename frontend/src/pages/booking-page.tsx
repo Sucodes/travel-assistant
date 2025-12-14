@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { formattedDate } from "../utilities/formattedDate";
+import styles from "./booking-page.module.css";
 
 type FlightDetail = {
   id: number;
@@ -21,6 +22,7 @@ type FlightDetail = {
 
 const BookingPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [booking, setBooking] = useState<FlightDetail | null>(null);
 
   useEffect(() => {
@@ -41,43 +43,53 @@ const BookingPage = () => {
   if (!booking) return <p>Loading booking...</p>;
 
   return (
-    <main>
-      <h1>Review flight information</h1>
+    <main className={styles.container}>
+      <h1 className={styles.title}>Review flight information</h1>
 
-      <div>
-        <div>
-          <strong>{booking.airline}</strong>
-          <span>{booking.flight_number}</span>
+      <div className={styles.card}>
+        <div className={styles.header}>
+          <strong className={styles.airline}>{booking.airline}</strong>
+          <span className={styles.flightNumber}>{booking.flight_number}</span>
         </div>
 
-        <div>
-          <div>
+        <div className={styles.route}>
+          <div className={styles.location}>
             <p>{formattedDate(booking.departure_time, "MMM D HH:mm")}</p>
             <p>
               {booking.departure_city} ({booking.departure_code})
             </p>
           </div>
 
-          <div>
+          <div style={{ textAlign: "right" }}>
             <p>{formattedDate(booking.arrival_time, "MMM D HH:mm")}</p>
-            <p>
+            <p className={styles.city}>
               {booking.arrival_city} ({booking.arrival_code})
             </p>
           </div>
         </div>
 
-        <div>
+        <div className={styles.details}>
           <span>
             {booking.stops === 0 ? "Non-stop" : `${booking.stops} stop(s)`}
           </span>
           <span>{booking.duration} mins</span>
         </div>
 
-        <div>Total: €{booking.price}</div>
+        <div className={styles.total}>Total: €{booking.price}</div>
       </div>
 
-      <button>
+      <button
+        className={styles.button}
+        onClick={() => navigate(`/booking/${id}/update`)}
+      >
         Next
+      </button>
+      <button
+        className={styles.button}
+        style={{ marginTop: "2rem" }}
+        onClick={() => navigate(`/`)}
+      >
+        Back
       </button>
     </main>
   );

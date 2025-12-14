@@ -8,6 +8,7 @@ import FlightResults, {
   type FlightResultsProps,
 } from "../components/flight-results";
 import { toast } from "react-toastify";
+import { useNavigate } from 'react-router-dom';
 
 type FlightType = "returnFlight" | "oneWayFlight";
 
@@ -69,6 +70,7 @@ const Home = () => {
       passengers: "",
     },
   });
+  const navigate = useNavigate();
 
   const fetch = async (data: FormData) => {
     try {
@@ -153,6 +155,7 @@ const Home = () => {
         }
       );
       toast(`${res.data.airline}` + " flight has been selected successfully!");
+      navigate(`/flight-booking/${flight.id}`);
     } catch (err) {
       console.log("Error:", err);
       toast("Flight not selected. Please try again.");
