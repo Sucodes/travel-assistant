@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import styles from "./profile.module.css";
-import { toast } from 'react-toastify';
-import type { FlightDetail } from './booking-page';
+import { toast } from "react-toastify";
+import type { FlightDetail } from "./booking-page";
+import FlightBookingCard from "../components/flight-booking-card";
 
 const Profile = () => {
   const [bookings, setBookings] = useState<FlightDetail[]>([]);
@@ -16,7 +17,6 @@ const Profile = () => {
         `${import.meta.env.VITE_API_BASE_URL}/api/flight-bookings`
       );
       setBookings(res.data);
-      toast("flights has been displayed successfully!");
     } catch (err) {
       console.error(err);
       toast("Could not load bookings");
@@ -35,6 +35,7 @@ const Profile = () => {
         `${import.meta.env.VITE_API_BASE_URL}/api/flight-bookings/${id}`
       );
       setBookings((prev) => prev.filter((b) => b.id !== id));
+      toast("flight booking has been deleted successfully!");
     } catch (err) {
       console.error(err);
       toast("Failed to delete booking");
@@ -72,56 +73,11 @@ const Profile = () => {
         {!loading && bookings.length > 0 && (
           <div className={styles.bookingsList}>
             {bookings.map((booking) => (
-              <div key={booking.id} className={styles.bookingCard}>
-                <div className={styles.bookingCardHeader}>
-                  <div className={styles.airlineInfo}>
-                    <h2 className={styles.airlineName}>{booking.airline}</h2>
-                    <p className={styles.flightNumber}>
-                      Flight {booking.flight_number}
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => deleteFlightBooking(booking.id)}
-                    className={styles.deleteButton}
-                  >
-                    Delete Booking
-                  </button>
-                </div>
-
-                <div className={styles.bookingCardBody}>
-                  <div className={styles.routeInfo}>
-                    <div className={styles.routePoint}>
-                      <h3 className={styles.routeCode}>
-                        {booking.departure_code}
-                      </h3>
-                      <p className={styles.routeTime}>
-                        {booking.departure_time}
-                      </p>
-                    </div>
-                    <div className={styles.routeArrow}>→</div>
-                    <div className={styles.routePoint}>
-                      <h3 className={styles.routeCode}>
-                        {booking.arrival_code}
-                      </h3>
-                      <p className={styles.routeTime}>{booking.arrival_time}</p>
-                    </div>
-                  </div>
-
-                  <div className={styles.bookingDetails}>
-                    <div className={styles.detailItem}>
-                      <p className={styles.detailLabel}>Passengers</p>
-                      <p className={styles.detailValue}>{booking.passengers}</p>
-                    </div>
-                    <div className={styles.detailItem}>
-                      <p className={styles.detailLabel}>Total Price</p>
-                      <p className={styles.detailValue}>
-                        <span className={styles.priceHighlight}>
-                          €{booking.price}
-                        </span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
+              <div key={booking.id}>
+                <FlightBookingCard
+                  booking={booking}
+                  onClick={() => deleteFlightBooking(booking.id)}
+                />
               </div>
             ))}
           </div>

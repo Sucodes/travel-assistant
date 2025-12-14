@@ -166,7 +166,7 @@ const Home = () => {
     <main className={styles.main}>
       {/* Main form for handling the flight bookings */}
 
-      <div style={{display: "flex", justifyContent: "space-around"}}>
+      <div style={{ display: "flex", justifyContent: "space-around" }}>
         <button
           onClick={() => {
             setStartDate(null);
@@ -253,6 +253,7 @@ const Home = () => {
               <div className={styles.inputGroup}>
                 <label>Enter arrival date</label>
                 <DatePicker
+                  placeholderText="Click to select a return date"
                   minDate={new Date()}
                   dateFormat="yyyy-MM-dd"
                   selected={endDate}
