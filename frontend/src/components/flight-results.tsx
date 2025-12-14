@@ -19,6 +19,7 @@ export interface FlightResultsProps {
   flight_number: string;
   price: string;
   stops: number;
+  passengers: string;
 }
 
 type FlightDataProps = {

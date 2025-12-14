@@ -4,7 +4,9 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import FlightResults, { type FlightResultsProps } from "../components/flight-results";
+import FlightResults, {
+  type FlightResultsProps,
+} from "../components/flight-results";
 
 type FlightType = "returnFlight" | "oneWayFlight";
 
@@ -125,8 +127,30 @@ const Home = () => {
 
   const flightTypeToggle = watch("flightType");
 
-  const handleSelectFlight = (flight: FlightResultsProps) => {
-    console.log("Selected flight ID:", flight);
+  const handleSelectFlight = async (flight: FlightResultsProps) => {
+    try {
+      const res = await axios.post(
+        "http://127.0.0.1:5000/api/flight-bookings",
+        {
+          airline: flight.airline,
+          airline_logo: flight.airline_logo,
+          flight_number: flight.flight_number,
+          departure_time: flight.departure.time,
+          departure_city: flight.departure.city,
+          departure_code: flight.departure.code,
+          arrival_time: flight.arrival.time,
+          arrival_city: flight.arrival.city,
+          arrival_code: flight.arrival.code,
+          duration: flight.duration,
+          stops: flight.stops,
+          price: flight.price,
+          passengers: flight.passengers,
+        }
+      );
+      console.log("Booking Response:", res.data);
+    } catch (err) {
+      console.log("Error:", err);
+    }
   };
 
   return (
