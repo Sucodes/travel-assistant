@@ -35,7 +35,6 @@ type FlightData = {
       };
       airline: string;
       flight_number: string;
-
       duration_label: string;
     }
   ];
@@ -81,6 +80,7 @@ const Home = () => {
             arrival_id: data.arrivalId,
             outbound_date: data.outboundDate,
             adults: data.passengers,
+            return_date: data.inboundDate !== null ? data.inboundDate : "",
           },
         }
       );
