@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { formattedDate } from "../utilities/formattedDate";
 import styles from "./booking-page.module.css";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import { toast } from 'react-toastify';
 
 export type FlightDetail = {
   id: number;
@@ -20,25 +22,60 @@ export type FlightDetail = {
   passengers: number;
 };
 
+interface FormData {
+  passengers: string;
+}
+
 const BookingPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [booking, setBooking] = useState<FlightDetail | null>(null);
+  const [editBooking, setEditBooking] = useState<boolean>(false);
+  const [saving, setSaving] = useState(false);
+  const { register, handleSubmit } = useForm<FormData>({
+    defaultValues: {
+      passengers: booking !== null ? String(booking.passengers) : "",
+    },
+  });
 
   useEffect(() => {
-    const getFlightBooking = async (id: string) => {
+    const getFlightBooking = async (bookingId: string) => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_API_BASE_URL}/api/flight-bookings/${id}`
+          `${
+            import.meta.env.VITE_API_BASE_URL
+          }/api/flight-bookings/${bookingId}`
         );
         setBooking(response.data);
       } catch (error) {
         console.error("Error fetching booking:", error);
+        toast("Could not load booking");
       }
     };
 
     if (id) getFlightBooking(id);
   }, [id]);
+
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    if (!booking) return;
+    try {
+      setSaving(true);
+      const res = await axios.put(
+        `${import.meta.env.VITE_API_BASE_URL}/api/flight-bookings/${
+          booking.id
+        }`,
+        { data }
+      );
+      setBooking(res.data);
+      setEditBooking(false);
+      navigate("/profile");
+    } catch (err) {
+      console.log("Error:", err);
+      toast("Could not update passengers, try again");
+    } finally {
+      setSaving(false);
+    }
+  }
 
   if (!booking) return <p>Loading booking...</p>;
 
@@ -78,12 +115,42 @@ const BookingPage = () => {
         <div className={styles.total}>Total: €{booking.price}</div>
       </div>
 
-      <button
-        className={styles.button}
-        onClick={() => navigate(`/booking/${id}/update`)}
-      >
-        Next
-      </button>
+      {!editBooking ? (
+        <button className={styles.button} onClick={() => setEditBooking(true)}>
+          Edit passengers
+        </button>
+      ) : (
+        <div style={{ marginTop: "1rem" }}>
+          <label style={{ display: "block", marginBottom: ".5rem" }}>
+            Passengers
+          </label>
+          <input
+            {...register("passengers")}
+            style={{ width: "100%", padding: "10px" }}
+          />
+
+          <button
+            className={styles.button}
+            style={{ marginTop: "1rem" }}
+            onClick={handleSubmit(onSubmit)}
+            disabled={saving}
+          >
+            {saving ? "Saving..." : "Save and go to Profile"}
+          </button>
+
+          <button
+            className={styles.button}
+            style={{ marginTop: ".5rem" }}
+            onClick={() => {
+              setEditBooking(false);
+            }}
+            disabled={saving}
+          >
+            Cancel
+          </button>
+        </div>
+      )}
+
       <button
         className={styles.button}
         style={{ marginTop: "2rem" }}
