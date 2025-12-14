@@ -1,5 +1,5 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
-import styles from "./Home.module.css";
+import styles from "./home.module.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useEffect, useState } from "react";
@@ -73,14 +73,17 @@ const Home = () => {
 
   const fetch = async (data: FormData) => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/flights`, {
-        params: {
-          departure_id: data.departureId,
-          arrival_id: data.arrivalId,
-          outbound_date: data.outboundDate,
-          adults: data.passengers,
-        },
-      });
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_BASE_URL}/api/flights`,
+        {
+          params: {
+            departure_id: data.departureId,
+            arrival_id: data.arrivalId,
+            outbound_date: data.outboundDate,
+            adults: data.passengers,
+          },
+        }
+      );
       const newData = res.data.data.itineraries.topFlights.map(
         (flightDetail: FlightData, index: number) => {
           const { flights, duration, airline_logo, price, stops } =
