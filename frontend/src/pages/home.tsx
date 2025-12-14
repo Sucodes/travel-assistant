@@ -155,7 +155,7 @@ const Home = () => {
         }
       );
       toast(`${res.data.airline}` + " flight has been selected successfully!");
-      navigate(`/flight-booking/${flight.id}`);
+      navigate(`/flight-booking/${res.data.id}`);
     } catch (err) {
       console.log("Error:", err);
       toast("Flight not selected. Please try again.");

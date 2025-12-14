@@ -1,12 +1,16 @@
-import styles from "./flight-booking-card.module.css"
-import type { FlightDetail } from '../pages/booking-page';
+import styles from "./flight-booking-card.module.css";
+import type { FlightDetail } from "../pages/booking-page";
+import { useNavigate } from 'react-router-dom';
 
 type FlightBookingCardProps = {
-    onClick: (id: number) => void;
-    booking: FlightDetail
-}
+  onClick: (id: number) => void;
+  booking: FlightDetail;
+};
 
-const flightBookingCard = ({booking, onClick}: FlightBookingCardProps) => {
+const flightBookingCard = ({ booking, onClick }: FlightBookingCardProps) => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const navigate = useNavigate();
+
   return (
     <div className={styles.bookingCard}>
       <div className={styles.bookingCardHeader}>
@@ -14,12 +18,25 @@ const flightBookingCard = ({booking, onClick}: FlightBookingCardProps) => {
           <h2 className={styles.airlineName}>{booking.airline}</h2>
           <p className={styles.flightNumber}>Flight {booking.flight_number}</p>
         </div>
-        <button
-          onClick={() => onClick(booking.id)}
-          className={styles.deleteButton}
-        >
-          Delete Booking
-        </button>
+
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <button
+            onClick={() => navigate(`/flight-booking/${booking.id}`)}
+            style={{
+              marginRight: "2rem",
+              borderRadius: "8px",
+              padding: "8px 10px",
+            }}
+          >
+            Edit
+          </button>
+          <button
+            onClick={() => onClick(booking.id)}
+            className={styles.deleteButton}
+          >
+            Delete Booking
+          </button>
+        </div>
       </div>
 
       <div className={styles.bookingCardBody}>
@@ -50,6 +67,6 @@ const flightBookingCard = ({booking, onClick}: FlightBookingCardProps) => {
       </div>
     </div>
   );
-}
+};
 
-export default flightBookingCard
+export default flightBookingCard;

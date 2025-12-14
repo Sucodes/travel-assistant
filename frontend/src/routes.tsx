@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router";
-import Home from './pages/home';
-import BookingPage from './pages/booking-page';
-import Profile from './pages/profile';
+import Home from "./pages/home";
+import BookingPage from "./pages/booking-page";
+import Profile from "./pages/profile";
 
 const router = createBrowserRouter([
   {
@@ -15,7 +15,7 @@ const router = createBrowserRouter([
   {
     path: "/profile",
     element: <Profile />,
-  }
+  },
 ]);
 
 export default router;
