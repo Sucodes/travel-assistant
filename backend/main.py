@@ -9,7 +9,7 @@ load_dotenv()
 
 def create_app(config=None):
     app = Flask(__name__)
-    CORS(app, resources={r"/api/*": {"origins": ["http://localhost:5173", "https://travel-assistant-261f.onrender.com"]}})
+    CORS(app, resources={r"/api/*": {"origins": ["http://localhost:5173", "https://travel-assistant-frontend-5nam.onrender.com"]}})
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project.db"
     db.init_app(app)
 
