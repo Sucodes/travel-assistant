@@ -3,21 +3,10 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import styles from "./profile.module.css";
 import { toast } from 'react-toastify';
-
-type Booking = {
-  id: number;
-  airline: string;
-  flight_number: string;
-  departure_code: string;
-  arrival_code: string;
-  departure_time: string;
-  arrival_time: string;
-  price: string | number;
-  passengers: number;
-};
+import type { FlightDetail } from './booking-page';
 
 const Profile = () => {
-  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [bookings, setBookings] = useState<FlightDetail[]>([]);
   const [loading, setLoading] = useState(true);
 
   const getAllFlightBookings = async () => {
@@ -39,6 +28,18 @@ const Profile = () => {
   useEffect(() => {
     getAllFlightBookings();
   }, []);
+
+  const deleteFlightBooking = async (id: number) => {
+    try {
+      await axios.delete(
+        `${import.meta.env.VITE_API_BASE_URL}/api/flight-bookings/${id}`
+      );
+      setBookings((prev) => prev.filter((b) => b.id !== id));
+    } catch (err) {
+      console.error(err);
+      toast("Failed to delete booking");
+    }
+  };
 
   return (
     <div className={styles.profileMain}>
@@ -80,6 +81,7 @@ const Profile = () => {
                     </p>
                   </div>
                   <button
+                    onClick={() => deleteFlightBooking(booking.id)}
                     className={styles.deleteButton}
                   >
                     Delete Booking

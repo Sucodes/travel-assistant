@@ -4,7 +4,7 @@ import axios from "axios";
 import { formattedDate } from "../utilities/formattedDate";
 import styles from "./booking-page.module.css";
 
-type FlightDetail = {
+export type FlightDetail = {
   id: number;
   airline: string;
   flight_number: string;
