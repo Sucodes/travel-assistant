@@ -29,14 +29,14 @@ type FlightDataProps = {
 };
 
 const FlightResults = ({ flight, onSelect }: FlightDataProps) => {
-  const { airline, departure, arrival, duration, stops, price } = flight;
+  const { airline, departure, arrival, duration, stops, price, passengers } = flight;
   return (
     <div className={styles.flightCard}>
       <div className={styles.flightHeader}>
         <div className={styles.airlineInfo}>
           <span className={styles.airlineName}>{airline}</span>
         </div>
-        <div className={styles.flightPrice}>${price}</div>
+        <div className={styles.flightPrice}>${price * Number(passengers)}</div>
       </div>
 
       <div className={styles.flightDetails}>

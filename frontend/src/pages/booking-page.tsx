@@ -112,7 +112,7 @@ const BookingPage = () => {
           <span>{booking.duration} mins</span>
         </div>
 
-        <div className={styles.total}>Total: €{booking.price}</div>
+        <div className={styles.total}>Total: €{booking.price * booking.passengers}</div>
       </div>
 
       {!editBooking ? (
