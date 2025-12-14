@@ -5,7 +5,6 @@
 This project focuses on implementing CRUD operations (Create, Read, Update, Delete) using a client–server architecture and simulates a low-cost flight booking platform (inspired by RyanAir).
 
 ![Travel Assistant App](screenshots/home.png)
-<img src="screenshots/home.png" alt="Travel Assistant App" width="800"/>
 
 
 ## Architecture
