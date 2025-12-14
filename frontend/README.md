@@ -14,4 +14,4 @@ To run the project, follow the steps listed below
 
 3. Start the frontend server by running `npm run dev`
 
-4. Visit http://localhost:3000 to access the frontend and get started.
+4. Visit http://localhost:5173 to access the frontend and get started.

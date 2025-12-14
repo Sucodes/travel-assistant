@@ -60,3 +60,5 @@ To run the project, follow the steps listed below
    ```
 
 6. start the application server by running the following command `python3 main.py` for macOS/linux systems and `python main.py` for windows systems
+
+7. Visit http://127.0.0.1:5000 to access the backend and get started.
