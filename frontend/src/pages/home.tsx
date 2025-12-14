@@ -7,7 +7,7 @@ import axios from "axios";
 import FlightResults, {
   type FlightResultsProps,
 } from "../components/flight-results";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 type FlightType = "returnFlight" | "oneWayFlight";
 
@@ -73,7 +73,7 @@ const Home = () => {
 
   const fetch = async (data: FormData) => {
     try {
-      const res = await axios.get("http://127.0.0.1:5000/api/flights", {
+      const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/flights`, {
         params: {
           departure_id: data.departureId,
           arrival_id: data.arrivalId,
@@ -83,7 +83,8 @@ const Home = () => {
       });
       const newData = res.data.data.itineraries.topFlights.map(
         (flightDetail: FlightData, index: number) => {
-          const { flights, duration, airline_logo, price, stops } = flightDetail;
+          const { flights, duration, airline_logo, price, stops } =
+            flightDetail;
 
           return {
             id: index + 1,
@@ -108,7 +109,6 @@ const Home = () => {
         }
       );
       setFlightData(newData);
-      // sessionStorage.setItem("flightData", JSON.stringify(newData));
     } catch (err) {
       console.log("Error:", err);
     }
@@ -132,7 +132,7 @@ const Home = () => {
   const handleSelectFlight = async (flight: FlightResultsProps) => {
     try {
       const res = await axios.post(
-        "http://127.0.0.1:5000/api/flight-bookings",
+        `${import.meta.env.VITE_API_BASE_URL}/api/flight-bookings`,
         {
           airline: flight.airline,
           airline_logo: flight.airline_logo,

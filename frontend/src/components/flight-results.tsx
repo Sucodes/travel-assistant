@@ -42,7 +42,7 @@ const FlightResults = ({ flight, onSelect }: FlightDataProps) => {
       <div className={styles.flightDetails}>
         <div className={styles.timeLocation}>
           <div className={styles.flightTime}>
-            {formattedDate(departure.time, "MMM D")}
+            {formattedDate(departure.time, "MMM D hh:ma")}
           </div>
           <div className={styles.airportCode}>{departure.code}</div>
         </div>
@@ -56,16 +56,13 @@ const FlightResults = ({ flight, onSelect }: FlightDataProps) => {
 
         <div className={styles.timeLocation}>
           <div className={styles.flightTime}>
-            {formattedDate(arrival.time, "MMM D")}
+            {formattedDate(arrival.time, "MMM D hh:ma")}
           </div>
           <div className={styles.airportCode}>{arrival.code}</div>
         </div>
       </div>
 
-      <button
-        className={styles.selectButton}
-        onClick={() => onSelect(flight)}
-      >
+      <button className={styles.selectButton} onClick={() => onSelect(flight)}>
         Select Flight
       </button>
     </div>
