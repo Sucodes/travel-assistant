@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import dayjs from 'dayjs'; //dayjs documentation https://day.js.org/
 
 export const formattedDate = (
   date: dayjs.Dayjs | string | number | Date,

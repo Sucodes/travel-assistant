@@ -7,6 +7,7 @@ import axios from "axios";
 import FlightResults, {
   type FlightResultsProps,
 } from "../components/flight-results";
+import { toast } from 'react-toastify';
 
 type FlightType = "returnFlight" | "oneWayFlight";
 
@@ -144,9 +145,10 @@ const Home = () => {
           passengers: Number(flight.passengers),
         }
       );
-      console.log("Booking Response:", res.data);
+      toast(`${res.data.airline}` + " flight has been selected successfully!");
     } catch (err) {
       console.log("Error:", err);
+      toast("Flight not selected. Please try again.");
     }
   };
 
