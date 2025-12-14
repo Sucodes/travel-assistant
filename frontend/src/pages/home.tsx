@@ -108,18 +108,22 @@ const Home = () => {
         }
       );
       setFlightData(newData);
-      sessionStorage.setItem("flightData", JSON.stringify(newData));
+      // sessionStorage.setItem("flightData", JSON.stringify(newData));
     } catch (err) {
       console.log("Error:", err);
     }
   };
 
   useEffect(() => {
-    const storedFlightData = sessionStorage.getItem("flightData");
-    if (storedFlightData) {
-      setFlightData(JSON.parse(storedFlightData));
-    }
+    const stored = sessionStorage.getItem("flightData");
+    if (stored) setFlightData(JSON.parse(stored));
   }, []);
+
+  useEffect(() => {
+    if (flightData && flightData.length > 0) {
+      sessionStorage.setItem("flightData", JSON.stringify(flightData));
+    }
+  }, [flightData]);
 
   const onSubmit: SubmitHandler<FormData> = (data) => fetch(data);
 
