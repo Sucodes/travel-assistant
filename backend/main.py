@@ -69,7 +69,7 @@ def create_app(config=None):
     @app.route("/api/flight-bookings/<int:flight_booking_id>", methods=["GET"])
     def get_flight_booking(flight_booking_id):
         booking = Flight_Bookings.query.get(flight_booking_id)
-        if booking is None:
+        if booking is not None:
             return jsonify(booking.to_dict())
         else:
             return jsonify({"error": "Booking not found"}), 404
