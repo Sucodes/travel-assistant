@@ -64,7 +64,7 @@ const BookingPage = () => {
         `${import.meta.env.VITE_API_BASE_URL}/api/flight-bookings/${
           booking.id
         }`,
-        { data }
+        { passengers: Number(data.passengers) }
       );
       setBooking(res.data);
       setEditBooking(false);

@@ -60,7 +60,7 @@ const flightBookingCard = ({ booking, onClick }: FlightBookingCardProps) => {
           <div className={styles.detailItem}>
             <p className={styles.detailLabel}>Total Price</p>
             <p className={styles.detailValue}>
-              <span className={styles.priceHighlight}>€{booking.price}</span>
+              <span className={styles.priceHighlight}>€{booking.price * booking.passengers}</span>
             </p>
           </div>
         </div>
