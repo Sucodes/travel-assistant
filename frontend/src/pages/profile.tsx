@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import styles from "./profile.module.css";
 import { toast } from 'react-toastify';
 
 type Booking = {
@@ -40,72 +41,89 @@ const Profile = () => {
   }, []);
 
   return (
-    <div style={{ maxWidth: 800, margin: "0 auto", padding: 16 }}>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: 12,
-        }}
-      >
-        <h2 style={{ margin: 0 }}>Profile</h2>
-
-        <Link to="/" style={{ textDecoration: "none" }}>
-          <button style={{ padding: "8px 12px", cursor: "pointer" }}>
-            Back to Home
-          </button>
-        </Link>
-      </div>
-
-      <p style={{ marginTop: 0, opacity: 0.8 }}>Your booked flights</p>
-
-      {loading ? <div>Loading…</div> : null}
-
-      {!loading && bookings.length === 0 ? (
-        <div style={{ padding: 12, border: "1px solid #ddd" }}>
-          No bookings yet.
-        </div>
-      ) : null}
-
-      <div style={{ display: "grid", gap: 10 }}>
-        {bookings.map((b) => (
-          <div key={b.id} style={{ border: "1px solid #ddd", padding: 12 }}>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                gap: 10,
-              }}
-            >
-              <div>
-                <strong>{b.airline}</strong> {b.flight_number}
-                <div style={{ fontSize: 14, opacity: 0.8 }}>
-                  {b.departure_code} to {b.arrival_code}
-                </div>
-                <div style={{ fontSize: 13, opacity: 0.8 }}>
-                  Departs: {b.departure_time}, Arrives: {b.arrival_time}
-                </div>
-                <div style={{ fontSize: 13, opacity: 0.8 }}>
-                  Passengers: {b.passengers}, Price: £{b.price}
-                </div>
+    <div className={styles.profileMain}>
+      <div className={styles.profileContainer}>
+        <div className={styles.profileHeader}>
+          <div className={styles.profileHeaderTop}>
+            <div className={styles.profileHeaderContent}>
+              <div className={styles.profileTitle}>
+                <h1>My Flight Bookings</h1>
+                <p>Manage your upcoming trips and reservations</p>
               </div>
-
-              <button
-                style={{
-                  padding: "8px 12px",
-                  cursor: "pointer",
-                  border: "1px solid #c00",
-                  background: "#fff",
-                  fontWeight: 700,
-                  height: "fit-content",
-                }}
-              >
-                Delete
-              </button>
+              <Link to="/" className={styles.backButton}>
+                ← Back to Search
+              </Link>
             </div>
           </div>
-        ))}
+        </div>
+
+        {loading && (
+          <div className={styles.loadingState}>Loading your bookings...</div>
+        )}
+
+        {!loading && bookings.length === 0 && (
+          <div className={styles.emptyState}>
+            <h3>No bookings yet</h3>
+            <p>Start searching for flights to make your first booking!</p>
+          </div>
+        )}
+
+        {!loading && bookings.length > 0 && (
+          <div className={styles.bookingsList}>
+            {bookings.map((booking) => (
+              <div key={booking.id} className={styles.bookingCard}>
+                <div className={styles.bookingCardHeader}>
+                  <div className={styles.airlineInfo}>
+                    <h2 className={styles.airlineName}>{booking.airline}</h2>
+                    <p className={styles.flightNumber}>
+                      Flight {booking.flight_number}
+                    </p>
+                  </div>
+                  <button
+                    className={styles.deleteButton}
+                  >
+                    Delete Booking
+                  </button>
+                </div>
+
+                <div className={styles.bookingCardBody}>
+                  <div className={styles.routeInfo}>
+                    <div className={styles.routePoint}>
+                      <h3 className={styles.routeCode}>
+                        {booking.departure_code}
+                      </h3>
+                      <p className={styles.routeTime}>
+                        {booking.departure_time}
+                      </p>
+                    </div>
+                    <div className={styles.routeArrow}>→</div>
+                    <div className={styles.routePoint}>
+                      <h3 className={styles.routeCode}>
+                        {booking.arrival_code}
+                      </h3>
+                      <p className={styles.routeTime}>{booking.arrival_time}</p>
+                    </div>
+                  </div>
+
+                  <div className={styles.bookingDetails}>
+                    <div className={styles.detailItem}>
+                      <p className={styles.detailLabel}>Passengers</p>
+                      <p className={styles.detailValue}>{booking.passengers}</p>
+                    </div>
+                    <div className={styles.detailItem}>
+                      <p className={styles.detailLabel}>Total Price</p>
+                      <p className={styles.detailValue}>
+                        <span className={styles.priceHighlight}>
+                          €{booking.price}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
